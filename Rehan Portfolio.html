@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rehan Tamboli — Video Editor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0B0E14;
+    --surface: #12161F;
+    --surface-alt: #171C27;
+    --accent: #6EA8FE;
+    --accent-dim: #345B9E;
+    --text: #F2EFE7;
+    --text-muted: #9AA1AE;
+    --line: rgba(242,239,231,0.12);
+    --maxw: 1180px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  img{ max-width:100%; display:block; }
+  a{ color: inherit; text-decoration: none; }
+  .display{ font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.045em; font-weight: 700; }
+
+  .wrap{ max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- nav ---------- */
+  header{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(11,14,20,0.86);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content: space-between;
+    height: 68px;
+  }
+  .brand{ font-family:'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.05rem; letter-spacing: 0.02em; }
+  .navlinks{ display:flex; gap: 28px; font-size: 0.92rem; color: var(--text-muted); }
+  .navlinks a:hover{ color: var(--text); }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding: 76px 0 64px;
+    display:grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .kicker{
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  h1.hero-title{
+    font-size: clamp(2.4rem, 6.4vw, 4.4rem);
+    line-height: 1.06;
+    margin: 0 0 22px;
+  }
+  .hero-bio{
+    max-width: 52ch;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    margin-bottom: 32px;
+  }
+  .hero-bio strong{ color: var(--text); font-weight: 600; }
+  .cta-row{ display:flex; gap: 14px; flex-wrap: wrap; }
+  .btn{
+    display:inline-block;
+    padding: 13px 26px;
+    border-radius: 2px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  }
+  .btn-solid{ background: var(--accent); color: #171106; }
+  .btn-solid:hover{ background: #8BB9FF; }
+  .btn-outline{ border-color: var(--line); color: var(--text); }
+  .btn-outline:hover{ border-color: var(--accent); color: var(--accent); }
+
+  /* filmstrip decorative element */
+  .filmstrip{
+    display:flex; flex-direction: column; gap: 10px;
+    animation: strip-in 0.9s ease both;
+  }
+  .filmstrip .frame{
+    position: relative;
+    border: 1px solid var(--line);
+    padding: 6px;
+    background: var(--surface);
+  }
+  .filmstrip .frame img{ aspect-ratio: 16/9; object-fit: cover; }
+  .filmstrip .frame:nth-child(2){ margin-left: 34px; }
+  .filmstrip .frame:nth-child(3){ margin-left: 10px; }
+  @keyframes strip-in{
+    from{ opacity:0; transform: translateY(14px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .filmstrip{ animation: none; }
+  }
+
+  /* ---------- stats ---------- */
+  .stats{
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 30px 0;
+    display:flex;
+    gap: 56px;
+    flex-wrap: wrap;
+  }
+  .stat-num{ font-family:'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.9rem; color: var(--accent); line-height:1; }
+  .stat-label{ color: var(--text-muted); font-size: 0.88rem; margin-top: 4px; }
+
+  /* ---------- section shell ---------- */
+  section{ padding: 84px 0; }
+  .section-head{
+    display:flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 40px; gap: 20px; flex-wrap: wrap;
+  }
+  .section-head h2{
+    font-family:'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(1.5rem, 3vw, 2.1rem);
+    margin: 0; letter-spacing: -0.01em;
+  }
+  .section-sub{ color: var(--text-muted); max-width: 40ch; font-size: 0.98rem; }
+
+  /* ---------- long form grid ---------- */
+  .lf-grid{
+    display:grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 18px;
+  }
+  .lf-card{
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .lf-card.featured{ grid-column: span 4; grid-row: span 2; }
+  .lf-card:not(.featured){ grid-column: span 3; }
+  .lf-card img{
+    width:100%; aspect-ratio: 16/9; object-fit: cover;
+    filter: saturate(0.9) brightness(0.88);
+    transition: transform 0.5s ease, filter 0.5s ease;
+  }
+  .lf-card:hover img{ transform: scale(1.04); filter: saturate(1) brightness(1); }
+  .lf-card .play{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    opacity:0; transition: opacity 0.25s ease;
+  }
+  .lf-card:hover .play{ opacity:1; }
+  .play span{
+    width:52px; height:52px; border-radius:50%;
+    border:1px solid var(--accent);
+    background: rgba(11,14,20,0.55);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .play span::after{
+    content:''; margin-left: 3px;
+    border-style: solid; border-width: 8px 0 8px 13px;
+    border-color: transparent transparent transparent var(--accent);
+  }
+  .lf-tag{
+    position:absolute; left:12px; bottom:12px;
+    font-size: 0.78rem; color: var(--text-muted);
+    background: rgba(11,14,20,0.7);
+    padding: 4px 9px;
+  }
+
+  /* ---------- shorts filmreel ---------- */
+  .shorts-reel{
+    display:flex; gap: 16px; overflow-x: auto;
+    padding-bottom: 12px;
+    scroll-snap-type: x proximity;
+  }
+  .shorts-reel::-webkit-scrollbar{ height: 4px; }
+  .shorts-reel::-webkit-scrollbar-thumb{ background: var(--line); }
+  .short-card{
+    flex: 0 0 200px;
+    scroll-snap-align: start;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    overflow:hidden;
+    position: relative;
+  }
+  .short-card img{
+    width:100%; aspect-ratio: 9/16; object-fit: cover;
+    filter: saturate(0.9) brightness(0.88);
+    transition: transform 0.5s ease, filter 0.5s ease;
+  }
+  .short-card:hover img{ transform: scale(1.04); filter: saturate(1) brightness(1); }
+  .short-card .play{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    opacity:0; transition: opacity 0.25s ease;
+  }
+  .short-card:hover .play{ opacity:1; }
+
+  /* ---------- kit ---------- */
+  .kit-groups{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .kit-group h3{
+    font-size: 0.85rem; color: var(--accent); font-weight:600; margin: 0 0 14px;
+  }
+  .kit-tags{ display:flex; flex-wrap:wrap; gap: 9px; }
+  .kit-tags span{
+    border: 1px solid var(--line);
+    padding: 7px 13px;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+  }
+
+  /* ---------- contact ---------- */
+  footer{
+    border-top: 1px solid var(--line);
+    padding: 72px 0 40px;
+  }
+  .contact-line{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.9rem, 4.6vw, 3.2rem);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    margin: 0 0 34px;
+    max-width: 16ch;
+  }
+  .contact-details{
+    display:flex; flex-wrap:wrap; gap: 36px;
+    color: var(--text-muted); font-size: 0.95rem;
+    padding-bottom: 30px; margin-bottom: 26px;
+    border-bottom: 1px solid var(--line);
+  }
+  .contact-details a:hover{ color: var(--accent); }
+  .contact-details .k{ display:block; color: var(--text); font-weight:600; margin-bottom: 3px; }
+  .fine{ color: var(--text-muted); font-size: 0.82rem; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 880px){
+    .hero{ grid-template-columns: 1fr; padding-top: 48px; }
+    .filmstrip{ flex-direction: row; overflow-x:auto; }
+    .filmstrip .frame{ flex: 0 0 150px; }
+    .filmstrip .frame:nth-child(2), .filmstrip .frame:nth-child(3){ margin-left:0; }
+    .lf-grid{ grid-template-columns: 1fr 1fr; }
+    .lf-card.featured{ grid-column: span 2; grid-row: auto; }
+    .lf-card:not(.featured){ grid-column: span 1; }
+    .kit-groups{ grid-template-columns: 1fr 1fr; }
+    section{ padding: 60px 0; }
+  }
+  @media (max-width: 540px){
+    .navlinks{ gap: 16px; font-size: 0.82rem; }
+    .lf-grid{ grid-template-columns: 1fr; }
+    .lf-card.featured{ grid-column: span 1; }
+    .kit-groups{ grid-template-columns: 1fr; }
+    .stats{ gap: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="brand">REHAN TAMBOLI</div>
+    <div class="navlinks">
+      <a href="#work">Work</a>
+      <a href="#shorts">Shorts</a>
+      <a href="#kit">Kit</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<div class="wrap">
+  <section class="hero" style="padding-top:60px;">
+    <div>
+      <div class="kicker">PUNE, MAHARASHTRA — VIDEO EDITOR</div>
+      <h1 class="hero-title display">Cut for<br>attention.</h1>
+      <p class="hero-bio">I'm Rehan, a video editor with experience across <strong>tech media, ed-tech, and branded content</strong>. Currently editing for Armoks Media on Trakin Tech and Trakin Tech English — storytelling-driven cuts, motion graphics, and fast-paced production in Premiere Pro, After Effects, and Photoshop.</p>
+      <div class="cta-row">
+        <a href="#work" class="btn btn-solid">See the work</a>
+        <a href="#contact" class="btn btn-outline">Get in touch</a>
+      </div>
+    </div>
+    <div class="filmstrip">
+      <div class="frame"><img src="https://img.youtube.com/vi/iyeWJ9TkSvk/hqdefault.jpg" alt=""></div>
+      <div class="frame"><img src="https://img.youtube.com/vi/OmMQSUIZ7rE/hqdefault.jpg" alt=""></div>
+      <div class="frame"><img src="https://img.youtube.com/vi/VsfESK1hQ64/hqdefault.jpg" alt=""></div>
+    </div>
+  </section>
+
+  <div class="stats">
+    <div>
+      <div class="stat-num display">200+</div>
+      <div class="stat-label">Videos edited</div>
+    </div>
+    <div>
+      <div class="stat-num display">300M+</div>
+      <div class="stat-label">Views generated</div>
+    </div>
+    <div>
+      <div class="stat-num display">3+</div>
+      <div class="stat-label">Years editing</div>
+    </div>
+  </div>
+
+  <section id="work">
+    <div class="section-head">
+      <h2 class="display">Long-form edits</h2>
+      <p class="section-sub">Full-length YouTube edits cut for pacing, clarity, and retention.</p>
+    </div>
+    <div class="lf-grid">
+      <a class="lf-card featured" href="https://youtu.be/iyeWJ9TkSvk" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/iyeWJ9TkSvk/hqdefault.jpg" alt="Long-form edit">
+        <div class="play"><span></span></div>
+        <div class="lf-tag">Long-form</div>
+      </a>
+      <a class="lf-card" href="https://youtube.com/watch?v=OmMQSUIZ7rE" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/OmMQSUIZ7rE/hqdefault.jpg" alt="Long-form edit">
+        <div class="play"><span></span></div>
+      </a>
+      <a class="lf-card" href="https://youtu.be/VsfESK1hQ64" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/VsfESK1hQ64/hqdefault.jpg" alt="Long-form edit">
+        <div class="play"><span></span></div>
+      </a>
+      <a class="lf-card" href="https://youtu.be/KEzQAikITm4" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/KEzQAikITm4/hqdefault.jpg" alt="Long-form edit">
+        <div class="play"><span></span></div>
+      </a>
+      <a class="lf-card" href="https://youtu.be/lq0KXnbKyfM" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/lq0KXnbKyfM/hqdefault.jpg" alt="Long-form edit">
+        <div class="play"><span></span></div>
+      </a>
+      <a class="lf-card" href="https://youtu.be/IIrM5T5wL7s" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/IIrM5T5wL7s/hqdefault.jpg" alt="Long-form edit">
+        <div class="play"><span></span></div>
+      </a>
+    </div>
+  </section>
+
+  <section id="shorts">
+    <div class="section-head">
+      <h2 class="display">Shorts &amp; reels</h2>
+      <p class="section-sub">Vertical cuts built for the scroll — tighter pacing, faster hooks.</p>
+    </div>
+    <div class="shorts-reel">
+      <a class="short-card" href="https://youtube.com/shorts/HsY08e8Yeok" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/HsY08e8Yeok/hqdefault.jpg" alt="Short edit">
+        <div class="play"><span></span></div>
+      </a>
+      <a class="short-card" href="https://youtube.com/shorts/l7dvvf3am3o" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/l7dvvf3am3o/hqdefault.jpg" alt="Short edit">
+        <div class="play"><span></span></div>
+      </a>
+      <a class="short-card" href="https://youtube.com/shorts/fhhlqG3A2K8" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/fhhlqG3A2K8/hqdefault.jpg" alt="Short edit">
+        <div class="play"><span></span></div>
+      </a>
+      <a class="short-card" href="https://youtube.com/shorts/7Heto-ZbbeE" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/7Heto-ZbbeE/hqdefault.jpg" alt="Short edit">
+        <div class="play"><span></span></div>
+      </a>
+      <a class="short-card" href="https://youtube.com/shorts/esjfBOCu0IA" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/esjfBOCu0IA/hqdefault.jpg" alt="Short edit">
+        <div class="play"><span></span></div>
+      </a>
+      <a class="short-card" href="https://youtube.com/shorts/28yUcQcM60o" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/28yUcQcM60o/hqdefault.jpg" alt="Short edit">
+        <div class="play"><span></span></div>
+      </a>
+    </div>
+  </section>
+
+  <section id="kit">
+    <div class="section-head">
+      <h2 class="display">Tools of the edit</h2>
+    </div>
+    <div class="kit-groups">
+      <div class="kit-group">
+        <h3>Editing &amp; post</h3>
+        <div class="kit-tags">
+          <span>Adobe Premiere Pro</span>
+          <span>Sound Design</span>
+          <span>Motion Graphics</span>
+        </div>
+      </div>
+      <div class="kit-group">
+        <h3>Motion &amp; effects</h3>
+        <div class="kit-tags">
+          <span>Adobe After Effects</span>
+          <span>Visual Effects</span>
+          <span>Colour Correction</span>
+        </div>
+      </div>
+      <div class="kit-group">
+        <h3>Design</h3>
+        <div class="kit-tags">
+          <span>Adobe Photoshop</span>
+          <span>Thumbnail Design</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer id="contact">
+  <div class="wrap">
+    <p class="contact-line display">Let's cut<br>something great.</p>
+    <div class="contact-details">
+      <div>
+        <span class="k">Email</span>
+        <a href="mailto:tambolireehan786@gmail.com">tambolireehan786@gmail.com</a>
+      </div>
+      <div>
+        <span class="k">Phone</span>
+        <a href="tel:+919112278564">+91 91122 78564</a>
+      </div>
+      <div>
+        <span class="k">Based in</span>
+        Pune, Maharashtra
+      </div>
+    </div>
+    <p class="fine">© 2026 Rehan Tamboli — Edit. Grade. Deliver.</p>
+  </div>
+</footer>
+
+</body>
+</html>
